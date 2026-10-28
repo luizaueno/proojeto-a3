@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Analisador do Robô</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 700px; margin: 30px auto; }
+    textarea { width: 100%; height: 160px; font-family: monospace; font-size: 16px; }
+    button { margin: 10px 0; padding: 8px 16px; font-size: 16px; cursor: pointer;}
+    #saida { border: 1px solid #ccc; padding: 10px; min-height: 60px; white-space: pre-wrap; font-family: monospace; 
+    }
+  </style>
+</head>
+<body>
+  <h1>Analisador do Robô</h1>
+
+  <textarea id="entrada"></textarea>
+  <button id="botao">Analisar</button>
+
+  <h3>Resultado</h3>
+  <div id="saida"></div>
+
+  <script type="module" src="main.js"></script> <!-- module porque:
+  O navegador só executa o módulo depois de montar a página, então o getElementById sempre encontra os elementos.
+  As funções de um módulo não ficam globais. Aqui isso não atrapalha, porque ligamos o botão com addEventListener.
+  Nos próximos passos, a vantagem aparece: dividiremos o código em arquivos e os ligaremos com import e export. -->
+</body>
+</html>
