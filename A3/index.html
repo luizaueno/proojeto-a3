@@ -1,0 +1,60 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Analisador da Linguagem de Desenho</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 900px;
+      margin: 30px auto;
+      padding: 0 16px;
+    }
+
+    textarea {
+      box-sizing: border-box;
+      width: 100%;
+      height: 250px;
+      font-family: monospace;
+      font-size: 15px;
+    }
+
+    button {
+      margin: 12px 0;
+      padding: 10px 18px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    #saida {
+      border: 1px solid #ccc;
+      padding: 14px;
+      min-height: 100px;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      font-family: monospace;
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Analisador da Linguagem de Desenho - A3</h1>
+
+  <label for="entrada">Programa:</label>
+
+  <textarea id="entrada"></textarea>
+
+  <button id="botao" type="button">Analisar</button>
+
+  <h2>Resultado</h2>
+
+  <div id="saida"></div>
+
+  <script type="module" src="./main.js"></script>
+</body>
+</html>
