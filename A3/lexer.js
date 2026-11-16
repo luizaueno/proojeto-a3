@@ -57,8 +57,8 @@ export function analisarLexico(texto) {
       }
 
       // Recorta o trecho que gerou o erro léxico e o adiciona na lista de erros
-      const trecho = texto.slice(inicio, pos);
-      erros.push({ linha: linhaErro, trecho });
+      const lexema = texto.slice(inicio, pos);
+      erros.push({ linha: linhaErro, lexema });
     }
   }
 

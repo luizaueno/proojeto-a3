@@ -77,11 +77,6 @@ export function analisarSintatico(tokens) {
       const tipo = atual().tipo;
       const nome = nomes[tipo];
 
-      // Se o atributo já foi processado nesta sequência, barra a duplicação na gramática
-      if (Object.hasOwn(resultado, nome)) {
-        falhar(`atributo diferente de ${tipo}`);
-      }
-
       esperar(tipo); // Consome o identificador do atributo
 
       // Define o valor do atributo na AST, convertendo para número se for espessura
@@ -99,7 +94,7 @@ export function analisarSintatico(tokens) {
 
     // Regra da Linha: LINHA x1 y1 x2 y2 [atributos]
     if (tipo === "LINHA") {
-      esperar("LINHA");
+      const tok = esperar("LINHA"); // Guarda o token para capturar a linha
 
       const x1 = numero();
       const y1 = numero();
@@ -108,17 +103,18 @@ export function analisarSintatico(tokens) {
 
       return {
         tipo: "linha",
+        linha: tok.linha, // Registra a linha na AST
         x1,
         y1,
         x2,
         y2,
-        atributos: atributos() // Tenta consumir os atributos da linha
+        atributos: atributos()
       };
     }
 
     // Regra do Círculo: CIRC x y raio [atributos]
     if (tipo === "CIRC") {
-      esperar("CIRC");
+      const tok = esperar("CIRC"); // Guarda o token para capturar a linha
 
       const x = numero();
       const y = numero();
@@ -126,6 +122,7 @@ export function analisarSintatico(tokens) {
 
       return {
         tipo: "circulo",
+        linha: tok.linha, // Registra a linha na AST
         x,
         y,
         raio,
@@ -135,7 +132,7 @@ export function analisarSintatico(tokens) {
 
     // Regra do Retângulo: RET x y largura altura [atributos]
     if (tipo === "RET") {
-      esperar("RET");
+      const tok = esperar("RET"); // Guarda o token para capturar a linha
 
       const x = numero();
       const y = numero();
@@ -144,6 +141,7 @@ export function analisarSintatico(tokens) {
 
       return {
         tipo: "retangulo",
+        linha: tok.linha, // Registra a linha na AST
         x,
         y,
         largura,
@@ -157,7 +155,7 @@ export function analisarSintatico(tokens) {
 
   // Analisa uma estrutura de agrupamento "CONJUNTO" contendo modificadores e elementos internos
   function conjunto() {
-    esperar("CONJUNTO");
+    const tok = esperar("CONJUNTO"); // Guarda o token para capturar a linha
 
     const modificadores = [];
     const usados = new Set(); // Rastreia modificadores duplicados para barrá-los
@@ -197,7 +195,7 @@ export function analisarSintatico(tokens) {
 
     const elementos = [];
 
-    // Erro semântico/sintático estrutural: proíbe a declaração de conjuntos vazios "{ }"
+    // Erro semântico/sintático estrutural: proíbe a declaração de conjuntos vazios "[ ]"
     if (atual()?.tipo === "FECHA") {
       falhar(
         "LINHA, CIRC, RET ou CONJUNTO (grupo não vazio)"
@@ -214,6 +212,7 @@ export function analisarSintatico(tokens) {
 
     return {
       tipo: "conjunto",
+      linha: tok.linha, // Registra a linha na AST
       modificadores,
       elementos
     };
@@ -237,7 +236,7 @@ export function analisarSintatico(tokens) {
   /* --- PONTO DE ENTRADA DO COMPILADOR --- */
 
   // Todo programa gráfico válido precisa inicializar declarando a área de desenho
-  esperar("AREA_DESENHO");
+  const tokTela = esperar("AREA_DESENHO"); // Guarda o token para capturar a linha
 
   const largura = numero();
   const altura = numero();
@@ -251,7 +250,11 @@ export function analisarSintatico(tokens) {
   // Retorna a raiz da Árvore de Sintaxe Abstrata (AST) completamente montada
   return {
     tipo: "programa",
-    tela: { largura, altura },
+    tela: {
+      linha: tokTela.linha, // Registra a linha na AST
+      largura,
+      altura
+    },
     elementos
   };
 }
